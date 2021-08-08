@@ -41,7 +41,7 @@ impl PlanRewriter for StatisticsExactImpl<'_> {
                     ref args,
                 }],
                 PlanNode::Expression(ExpressionPlan { input, .. }),
-            ) if op == "count" && args.len() == 1 => match (&args[0], input.as_ref()) {
+            ) if op == "count" && args.len() == 1 => match (&args[0], input.as_ref()) { /// Also handle min/max here.
                 (Expression::Literal { .. }, PlanNode::ReadSource(read_source_plan))
                     if read_source_plan.statistics.is_exact =>
                 {

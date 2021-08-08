@@ -6,7 +6,7 @@ use std::any::Any;
 use std::mem::size_of;
 use std::sync::Arc;
 
-use common_datavalues::DataField;
+use common_datavalues::{DataField, DataValue};
 use common_datavalues::DataSchemaRef;
 use common_datavalues::DataSchemaRefExt;
 use common_datavalues::DataType;
@@ -89,8 +89,15 @@ impl Table for NumbersTable {
             ))
         })?;
 
-        let statistics =
-            Statistics::new_exact(total as usize, ((total) * size_of::<u64>() as u64) as usize);
+        let mut statistics =
+            Statistics::new_estimated(total as usize, ((total) * size_of::<u64>() as u64) as usize);
+        // Set extra count.
+        statistics.set_exact_count(DataValue::UInt64(Some(total)));
+        // Set extra min.
+        statistics.set_exact_min(DataValue::UInt64(Some(0)));
+        // Set extra max.
+        statistics.set_exact_max(DataValue::UInt64(Some(total)));
+
         ctx.try_set_statistics(&statistics)?;
         ctx.add_total_rows_approx(statistics.read_rows);
 
