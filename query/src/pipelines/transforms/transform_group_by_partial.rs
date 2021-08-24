@@ -22,8 +22,6 @@ use bumpalo::Bump;
 use byteorder::ByteOrder;
 use byteorder::LittleEndian;
 use common_datablocks::DataBlock;
-use common_datablocks::HashMethod;
-use common_datablocks::HashMethodKind;
 use common_datavalues::arrays::BinaryArrayBuilder;
 use common_datavalues::prelude::*;
 use common_exception::Result;

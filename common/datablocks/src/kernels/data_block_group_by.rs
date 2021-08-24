@@ -12,16 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use common_datavalues::prelude::*;
+use common_datavalues::HashMethodKind;
+use common_datavalues::HashMethodSerializer;
 use common_exception::Result;
 
-use crate::kernels::HashMethodKeysU16;
-use crate::kernels::HashMethodKeysU32;
-use crate::kernels::HashMethodKeysU64;
-use crate::kernels::HashMethodKeysU8;
-use crate::kernels::HashMethodKind;
-use crate::kernels::HashMethodSerializer;
 use crate::DataBlock;
-use crate::HashMethod;
 
 impl DataBlock {
     pub fn choose_hash_method(
@@ -51,40 +47,35 @@ impl DataBlock {
         let method = Self::choose_hash_method(block, column_names)?;
         Ok(match method {
             HashMethodKind::Serializer(s) => {
-                let blocks = s
-                    .group_by(block, column_names)?
+                let blocks = DataBlock::group_by(Box::new(s), block, column_names)?
                     .iter()
                     .map(|(_, _, b)| b.clone())
                     .collect();
                 blocks
             }
             HashMethodKind::KeysU8(s) => {
-                let blocks = s
-                    .group_by(block, column_names)?
+                let blocks = DataBlock::group_by(Box::new(s), block, column_names)?
                     .iter()
                     .map(|(_, _, b)| b.clone())
                     .collect();
                 blocks
             }
             HashMethodKind::KeysU16(s) => {
-                let blocks = s
-                    .group_by(block, column_names)?
+                let blocks = DataBlock::group_by(Box::new(s), block, column_names)?
                     .iter()
                     .map(|(_, _, b)| b.clone())
                     .collect();
                 blocks
             }
             HashMethodKind::KeysU32(s) => {
-                let blocks = s
-                    .group_by(block, column_names)?
+                let blocks = DataBlock::group_by(Box::new(s), block, column_names)?
                     .iter()
                     .map(|(_, _, b)| b.clone())
                     .collect();
                 blocks
             }
             HashMethodKind::KeysU64(s) => {
-                let blocks = s
-                    .group_by(block, column_names)?
+                let blocks = DataBlock::group_by(Box::new(s), block, column_names)?
                     .iter()
                     .map(|(_, _, b)| b.clone())
                     .collect();

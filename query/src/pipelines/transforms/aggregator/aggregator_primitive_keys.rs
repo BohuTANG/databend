@@ -16,7 +16,6 @@ use std::alloc::Layout;
 
 use bumpalo::Bump;
 use common_datablocks::DataBlock;
-use common_datablocks::HashMethod;
 use common_datavalues::arrays::ArrayBuilder;
 use common_datavalues::arrays::BinaryArrayBuilder;
 use common_datavalues::arrays::PrimitiveArrayBuilder;
@@ -25,6 +24,7 @@ use common_datavalues::prelude::Series;
 use common_datavalues::DFNumericType;
 use common_datavalues::DataSchemaRef;
 use common_datavalues::DataSchemaRefExt;
+use common_datavalues::HashMethod;
 use common_exception::Result;
 use common_functions::aggregates::get_layout_offsets;
 use common_functions::aggregates::AggregateFunctionRef;
@@ -42,7 +42,7 @@ use crate::common::HashMap;
 use crate::common::HashTableEntity;
 use crate::common::KeyHasher;
 
-pub struct Aggregator<Method: HashMethod> {
+pub struct Aggregator<Method: HashMethod<T>> {
     method: Method,
     funcs: Vec<AggregateFunctionRef>,
     arg_names: Vec<Vec<String>>,
@@ -51,7 +51,7 @@ pub struct Aggregator<Method: HashMethod> {
     offsets_aggregate_states: Vec<usize>,
 }
 
-impl<Method: HashMethod> Aggregator<Method>
+impl<Method: HashMethod<T>> Aggregator<Method>
 where
     DefaultHasher<Method::HashKey>: KeyHasher<Method::HashKey>,
     DefaultHashTableEntity<Method::HashKey, usize>: HashTableEntity<Method::HashKey>,

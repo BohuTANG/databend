@@ -19,8 +19,6 @@ use std::task::Poll;
 
 use common_arrow::arrow;
 use common_datablocks::DataBlock;
-use common_datablocks::HashMethod;
-use common_datablocks::HashMethodSerializer;
 use common_datavalues::prelude::*;
 use common_exception::Result;
 use futures::Stream;
@@ -53,7 +51,8 @@ impl LimitByStream {
         // TODO: use BitVec here.
         let mut filter_vec = vec![false; block.num_rows()];
         let method = HashMethodSerializer::default();
-        let group_indices = method.group_by_get_indices(block, &self.limit_by_columns_name)?;
+        let group_indices =
+            DataBlock::group_by_get_indices(Box::new(method), block, &self.limit_by_columns_name)?;
 
         for (limit_by_key, (rows, _)) in group_indices {
             for row in rows {

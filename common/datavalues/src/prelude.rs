@@ -23,6 +23,8 @@ pub use crate::bit_util::*;
 pub use crate::columns::DataColumn;
 pub use crate::columns::DataColumnCommon;
 pub use crate::data_array_filter::*;
+// hash
+pub use crate::data_hash_method::*;
 pub use crate::data_value::DFTryFrom;
 // series
 pub use crate::series::IntoSeries;
