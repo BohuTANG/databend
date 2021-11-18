@@ -25,7 +25,7 @@ use common_dal::StorageScheme;
 use common_dal::S3;
 use common_metrics::TenantLabel;
 
-use crate::configs::config_storage::AzureStorageBlobConfig;
+use crate::configs::AzureStorageBlobConfig;
 use crate::configs::StorageConfig;
 
 pub struct ContextDalBuilder {

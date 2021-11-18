@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+pub use context::DalContext;
+pub use context::DalMetrics;
 pub use data_accessor::read_obj;
 pub use data_accessor::AsyncSeekableReader;
 pub use data_accessor::Bytes;
@@ -32,6 +34,7 @@ pub use self::metrics::InputStreamWithMetric;
 pub use self::metrics::METRIC_DAL_READ_BYTES;
 pub use self::metrics::METRIC_DAL_WRITE_BYTES;
 
+mod context;
 mod data_accessor;
 mod impls;
 mod in_memory_data;
