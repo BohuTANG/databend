@@ -19,7 +19,6 @@ use pretty_assertions::assert_eq;
 
 #[test]
 fn test_logic_function() -> Result<()> {
-    #[allow(dead_code)]
     struct Test {
         name: &'static str,
         func_name: &'static str,
@@ -105,7 +104,11 @@ fn test_logic_function() -> Result<()> {
         // Display check.
         let expect_display = t.display.to_string();
         let actual_display = format!("{}", func);
-        assert_eq!(expect_display, actual_display);
+        assert_eq!(
+            expect_display, actual_display,
+            "{:#}:{:#}",
+            t.name, t.func_name
+        );
 
         // Nullable check.
         let expect_null = t.nullable;

@@ -87,7 +87,6 @@ struct HttpQuery {
 }
 
 struct HttpQueryState {
-    #[allow(dead_code)]
     session: SessionRef,
     context: DatabendQueryContextRef,
     data_stream: SendableDataBlockStream,

@@ -19,7 +19,6 @@ use pretty_assertions::assert_eq;
 
 #[test]
 fn test_cast_function() -> Result<()> {
-    #[allow(dead_code)]
     struct Test {
         name: &'static str,
         display: &'static str,
@@ -149,21 +148,21 @@ fn test_cast_function() -> Result<()> {
 
         let func = t.func.unwrap();
         if let Err(e) = func.eval(&columns, rows) {
-            assert_eq!(t.error, e.to_string());
+            assert_eq!(t.error, e.to_string(), "{:#}", t.name);
         }
         // Display check.
         let expect_display = t.display.to_string();
         let actual_display = format!("{}", func);
-        assert_eq!(expect_display, actual_display);
+        assert_eq!(expect_display, actual_display, "{:#}", t.name);
 
         // Nullable check.
         let expect_null = t.nullable;
         let actual_null = func.nullable(&DataSchema::empty())?;
-        assert_eq!(expect_null, actual_null);
+        assert_eq!(expect_null, actual_null, "{:#}", t.name);
 
         let v = &(func.eval(&columns, rows)?);
         let c: DataColumn = t.expect.into();
-        assert_eq!(v, &c);
+        assert_eq!(v, &c, "{:#}", t.name);
     }
     Ok(())
 }

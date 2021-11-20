@@ -19,11 +19,9 @@ use pretty_assertions::assert_eq;
 
 #[test]
 fn test_database_function() -> Result<()> {
-    #[allow(dead_code)]
     struct Test {
         name: &'static str,
         display: &'static str,
-        nullable: bool,
         columns: Vec<DataColumnWithField>,
         expect: DataColumn,
         error: &'static str,
@@ -34,7 +32,6 @@ fn test_database_function() -> Result<()> {
     let tests = vec![Test {
         name: "database-function-passed",
         display: "database",
-        nullable: false,
         func: DatabaseFunction::try_create("database")?,
         columns: vec![
             DataColumnWithField::new(Series::new(vec!["default"]).into(), dummy.clone()),
@@ -53,7 +50,7 @@ fn test_database_function() -> Result<()> {
                 // Display check.
                 let expect_display = t.display.to_string();
                 let actual_display = format!("{}", func);
-                assert_eq!(expect_display, actual_display);
+                assert_eq!(expect_display, actual_display, "{:#}", t.name);
                 assert_eq!(&v, &t.expect);
             }
             Err(e) => {

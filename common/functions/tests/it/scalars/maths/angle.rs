@@ -20,11 +20,9 @@ use common_functions::scalars::*;
 
 #[test]
 fn test_angle_function() -> Result<()> {
-    #[allow(dead_code)]
     struct Test {
         name: &'static str,
         display: &'static str,
-        nullable: bool,
         columns: DataColumn,
         expect: DataColumn,
         error: &'static str,
@@ -33,9 +31,8 @@ fn test_angle_function() -> Result<()> {
 
     let tests = vec![
         Test {
-            name: "degress-passed",
+            name: "degrees-passed",
             display: "degrees",
-            nullable: false,
             columns: Series::new([Some(PI), Some(PI / 2.0), None]).into(),
             func: DegressFunction::try_create("degrees")?,
             expect: Series::new([Some(180_f64), Some(90.0), None]).into(),
@@ -44,7 +41,6 @@ fn test_angle_function() -> Result<()> {
         Test {
             name: "radians-passed",
             display: "radians",
-            nullable: false,
             columns: Series::new([Some(180), None]).into(),
             func: RadiansFunction::try_create("radians")?,
             expect: Series::new([Some(PI), None]).into(),
