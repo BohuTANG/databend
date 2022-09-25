@@ -14,7 +14,9 @@
 
 #[allow(clippy::module_inception)]
 mod bloom;
+mod fuse8;
 mod xor8;
 
 pub use bloom::Bloom;
+pub use fuse8::Fuse8Bloom;
 pub use xor8::XorBloom;

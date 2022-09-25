@@ -19,27 +19,27 @@ use cbordata::FromCbor;
 use cbordata::IntoCbor;
 use common_exception::ErrorCode;
 use common_exception::Result;
-use xorfilter::Xor8;
+use xorfilter::Fuse8;
 
 use crate::bloom::Bloom;
 
-pub struct XorBloom {
-    filter: Xor8,
+pub struct Fuse8Bloom {
+    filter: Fuse8,
 }
 
-impl XorBloom {
-    pub fn create() -> Self {
-        XorBloom {
-            filter: Xor8::default(),
+impl Fuse8Bloom {
+    pub fn create(key_lens: u32) -> Self {
+        Fuse8Bloom {
+            filter: Fuse8::new(key_lens),
         }
     }
 }
 
-impl Bloom for XorBloom {
+impl Bloom for Fuse8Bloom {
     fn len(&self) -> Result<usize> {
         match self.filter.len() {
             Some(n) => Ok(n),
-            None => Err(ErrorCode::UnImplement("Xor8 does not implement len()")),
+            None => Err(ErrorCode::UnImplement("Fuse8 does not implement len()")),
         }
     }
 
@@ -61,7 +61,7 @@ impl Bloom for XorBloom {
     fn build(&mut self) -> Result<()> {
         self.filter
             .build()
-            .map_err(|e| ErrorCode::UnexpectedError(format!("Xor8.build error:{:?}", e)))
+            .map_err(|e| ErrorCode::UnexpectedError(format!("Fuse8.build error:{:?}", e)))
     }
 
     fn contains<K: ?Sized + Hash>(&self, key: &K) -> bool {
@@ -74,20 +74,20 @@ impl Bloom for XorBloom {
             .filter
             .clone()
             .into_cbor()
-            .map_err(|e| ErrorCode::UnexpectedError(format!("Xor8.into_cbor error:{:}", e)))?;
+            .map_err(|e| ErrorCode::UnexpectedError(format!("Fuse8.into_cbor error:{:}", e)))?;
         cbor_val
             .encode(&mut buf)
-            .map_err(|e| ErrorCode::UnexpectedError(format!("Xor8.encode error:{:}", e)))?;
+            .map_err(|e| ErrorCode::UnexpectedError(format!("Fuse8.encode error:{:}", e)))?;
 
         Ok(buf)
     }
 
     fn from_bytes(mut buf: &[u8]) -> Result<(Self, usize)> {
         let (cbor_val, n) = Cbor::decode(&mut buf)
-            .map_err(|e| ErrorCode::UnexpectedError(format!("Xor8.cbor.decode error:{:}", e)))?;
+            .map_err(|e| ErrorCode::UnexpectedError(format!("Fuse8.cbor.decode error:{:}", e)))?;
 
-        let xor_value = Xor8::from_cbor(cbor_val)
-            .map_err(|e| ErrorCode::UnexpectedError(format!("Xor8.from_cbor error:{:}", e)))?;
+        let xor_value = Fuse8::from_cbor(cbor_val)
+            .map_err(|e| ErrorCode::UnexpectedError(format!("Fuse8.from_cbor error:{:}", e)))?;
         Ok((Self { filter: xor_value }, n))
     }
 }
