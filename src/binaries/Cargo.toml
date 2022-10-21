@@ -57,6 +57,8 @@ tokio-stream = "0.1.10"
 tonic = "0.8.1"
 tracing = "0.1.36"
 url = "2.3.1"
+limits_rs = "0.1.0"
+sysinfo = "0.26.5"
 
 [[bin]]
 name = "databend-meta"

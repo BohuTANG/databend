@@ -34,7 +34,10 @@ use databend_query::servers::MySQLHandler;
 use databend_query::servers::Server;
 use databend_query::servers::ShutdownHandle;
 use databend_query::GlobalServices;
+use limits_rs::get_own_limits;
+use sysinfo::set_open_files_limit;
 use tracing::info;
+use tracing::warn;
 
 #[databend_main]
 async fn main(_global_tracker: Arc<RuntimeTracker>) -> common_exception::Result<()> {
@@ -72,6 +75,17 @@ async fn main(_global_tracker: Arc<RuntimeTracker>) -> common_exception::Result<
 
     init_default_metrics_recorder();
     set_panic_hook();
+
+    let limits = get_own_limits().unwrap();
+    let max_open_files_soft_limit = limits.max_open_files.soft;
+    match max_open_files_soft_limit {
+        Some(limit) => {
+            if limit < 65535 && set_open_files_limit(65535) {
+                warn!("Open files limit has been set to {}", 65535);
+            }
+        }
+        None => {}
+    }
 
     GlobalServices::init(conf.clone()).await?;
     let mut shutdown_handle = ShutdownHandle::create()?;
