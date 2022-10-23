@@ -2805,6 +2805,7 @@ dependencies = [
  "sentry",
  "serde",
  "serde_json",
+ "sysinfo",
  "tokio-stream",
  "tonic",
  "tracing",
@@ -7720,6 +7721,7 @@ dependencies = [
  "libc",
  "ntapi",
  "once_cell",
+ "rayon",
  "winapi",
 ]
 

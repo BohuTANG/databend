@@ -53,12 +53,11 @@ openraft = { workspace = true }
 sentry = "0.27.0"
 serde = { workspace = true }
 serde_json = { workspace = true }
+sysinfo = "0.26.5"
 tokio-stream = "0.1.10"
 tonic = "0.8.1"
 tracing = "0.1.36"
 url = "2.3.1"
-limits_rs = "0.1.0"
-sysinfo = "0.26.5"
 
 [[bin]]
 name = "databend-meta"
