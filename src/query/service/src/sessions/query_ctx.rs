@@ -26,7 +26,7 @@ use chrono_tz::Tz;
 use common_base::base::tokio::task::JoinHandle;
 use common_base::base::Progress;
 use common_base::base::ProgressValues;
-use common_base::base::TrySpawn;
+use common_base::runtime::TrySpawn;
 use common_config::Config;
 use common_config::DATABEND_COMMIT_VERSION;
 use common_datablocks::DataBlock;

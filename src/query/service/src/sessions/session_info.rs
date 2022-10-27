@@ -30,13 +30,12 @@ impl Session {
     }
 
     fn to_process_info(self: &Arc<Self>, status: &SessionContext) -> ProcessInfo {
-        let mut memory_usage = 0;
+        let mut memory_usage = 0i64;
 
         if let Some(shared) = status.get_query_context_shared() {
             if let Ok(runtime) = shared.try_get_runtime() {
                 let runtime_tracker = runtime.get_tracker();
-                let runtime_memory_tracker = runtime_tracker.get_memory_tracker();
-                memory_usage = runtime_memory_tracker.get_memory_usage();
+                memory_usage = runtime_tracker.get_memory_usage() as i64;
             }
         }
 
