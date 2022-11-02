@@ -170,6 +170,9 @@ impl PhysicalPlanBuilder {
                     table_index: DUMMY_TABLE_INDEX,
                 }))
             }
+            RelOperator::CopyScan(scan) => {
+                todo!()
+            }
             RelOperator::PhysicalHashJoin(join) => {
                 let build_side = self.build(s_expr.child(1)?).await?;
                 let probe_side = self.build(s_expr.child(0)?).await?;
@@ -598,6 +601,7 @@ impl PhysicalPlanBuilder {
             prewhere: prewhere_info,
             limit: scan.limit,
             order_by: order_by.unwrap_or_default(),
+            copy: None,
         })
     }
 }

@@ -14,6 +14,7 @@
 
 #![feature(type_alias_impl_trait)]
 
+pub mod copy;
 pub mod information_schema;
 pub mod memory;
 pub mod null;

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 mod aggregate;
+mod copy_scan;
 mod copy_v2;
 pub mod create_table_v2;
 mod dummy_table_scan;
@@ -37,6 +38,7 @@ mod union_all;
 mod update;
 
 pub use aggregate::*;
+pub use copy_scan::CopyScan;
 pub use copy_v2::*;
 pub use dummy_table_scan::DummyTableScan;
 pub use eval_scalar::*;

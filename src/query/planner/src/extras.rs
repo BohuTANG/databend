@@ -40,6 +40,10 @@ pub struct PrewhereInfo {
     pub filter: Expression,
 }
 
+// Copy info.
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, PartialEq, Eq)]
+pub struct CopyInfo {}
+
 /// Extras is a wrapper for push down items.
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, PartialEq, Eq, Default)]
 pub struct Extras {
@@ -55,18 +59,8 @@ pub struct Extras {
     pub limit: Option<usize>,
     /// Optional order_by expression plan, asc, null_first
     pub order_by: Vec<(Expression, bool, bool)>,
-}
-
-impl Extras {
-    pub fn default() -> Self {
-        Extras {
-            projection: None,
-            filters: vec![],
-            prewhere: None,
-            limit: None,
-            order_by: vec![],
-        }
-    }
+    // Optional copy plan information
+    pub copy: Option<CopyInfo>,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, PartialEq, Eq, Clone, Debug, Default)]

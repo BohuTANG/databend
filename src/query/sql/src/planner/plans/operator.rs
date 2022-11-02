@@ -32,6 +32,7 @@ use crate::optimizer::PhysicalProperty;
 use crate::optimizer::RelExpr;
 use crate::optimizer::RelationalProperty;
 use crate::optimizer::RequiredProperty;
+use crate::plans::CopyScan;
 use crate::plans::Exchange;
 
 pub trait Operator {
@@ -86,6 +87,7 @@ pub enum RelOp {
     Exchange,
     UnionAll,
     DummyTableScan,
+    CopyScan,
 
     // Pattern
     Pattern,
@@ -108,6 +110,7 @@ pub enum RelOperator {
     Exchange(Exchange),
     UnionAll(UnionAll),
     DummyTableScan(DummyTableScan),
+    CopyScan(CopyScan),
 
     Pattern(PatternPlan),
 }
@@ -128,6 +131,7 @@ impl Operator for RelOperator {
             RelOperator::Exchange(rel_op) => rel_op.rel_op(),
             RelOperator::UnionAll(rel_op) => rel_op.rel_op(),
             RelOperator::DummyTableScan(rel_op) => rel_op.rel_op(),
+            RelOperator::CopyScan(rel_op) => rel_op.rel_op(),
         }
     }
 
@@ -146,6 +150,7 @@ impl Operator for RelOperator {
             RelOperator::Exchange(rel_op) => rel_op.is_physical(),
             RelOperator::UnionAll(rel_op) => rel_op.is_physical(),
             RelOperator::DummyTableScan(rel_op) => rel_op.is_physical(),
+            RelOperator::CopyScan(rel_op) => rel_op.is_physical(),
         }
     }
 
@@ -164,6 +169,7 @@ impl Operator for RelOperator {
             RelOperator::Exchange(rel_op) => rel_op.is_logical(),
             RelOperator::UnionAll(rel_op) => rel_op.is_logical(),
             RelOperator::DummyTableScan(rel_op) => rel_op.is_logical(),
+            RelOperator::CopyScan(rel_op) => rel_op.is_logical(),
         }
     }
 
@@ -182,6 +188,7 @@ impl Operator for RelOperator {
             RelOperator::Exchange(rel_op) => rel_op.as_logical(),
             RelOperator::UnionAll(rel_op) => rel_op.as_logical(),
             RelOperator::DummyTableScan(rel_op) => rel_op.as_logical(),
+            RelOperator::CopyScan(rel_op) => rel_op.as_logical(),
         }
     }
 
@@ -200,6 +207,7 @@ impl Operator for RelOperator {
             RelOperator::Exchange(rel_op) => rel_op.as_physical(),
             RelOperator::UnionAll(rel_op) => rel_op.as_physical(),
             RelOperator::DummyTableScan(rel_op) => rel_op.as_physical(),
+            RelOperator::CopyScan(rel_op) => rel_op.as_physical(),
         }
     }
 }
@@ -441,6 +449,25 @@ impl TryFrom<RelOperator> for DummyTableScan {
         } else {
             Err(ErrorCode::Internal(
                 "Cannot downcast RelOperator to DummyTableScan",
+            ))
+        }
+    }
+}
+
+impl From<CopyScan> for RelOperator {
+    fn from(v: CopyScan) -> Self {
+        Self::CopyScan(v)
+    }
+}
+
+impl TryFrom<RelOperator> for CopyScan {
+    type Error = ErrorCode;
+    fn try_from(value: RelOperator) -> Result<Self> {
+        if let RelOperator::CopyScan(value) = value {
+            Ok(value)
+        } else {
+            Err(ErrorCode::Internal(
+                "Cannot downcast RelOperator to CopyScan",
             ))
         }
     }
