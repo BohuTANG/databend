@@ -15,8 +15,13 @@
 use std::fmt::Debug;
 use std::fmt::Formatter;
 use std::str::FromStr;
+use std::sync::Arc;
 
+use common_datavalues::prelude::*;
+use common_datavalues::DataField;
+use common_datavalues::DataSchema;
 use common_datavalues::DataSchemaRef;
+use common_datavalues::Vu8;
 use common_meta_types::MetaId;
 use common_meta_types::UserStageInfo;
 use common_planner::ReadDataSourcePlan;
@@ -74,6 +79,13 @@ pub enum CopyPlanV2 {
         validation_mode: ValidationMode,
         from: Box<Plan>,
     },
+}
+
+impl CopyPlanV2 {
+    pub fn schema(&self) -> DataSchemaRef {
+        let name = DataField::new("name", Vu8::to_data_type());
+        Arc::new(DataSchema::new(vec![name]))
+    }
 }
 
 impl Debug for CopyPlanV2 {

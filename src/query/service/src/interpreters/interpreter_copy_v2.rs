@@ -16,6 +16,7 @@ use std::path::Path;
 use std::sync::Arc;
 
 use common_base::base::GlobalIORuntime;
+use common_datablocks::DataBlock;
 use common_datavalues::chrono::Utc;
 use common_datavalues::prelude::*;
 use common_exception::ErrorCode;
@@ -411,6 +412,10 @@ impl Interpreter for CopyInterpreterV2 {
         "CopyInterpreterV2"
     }
 
+    fn schema(&self) -> DataSchemaRef {
+        self.plan.schema()
+    }
+
     #[tracing::instrument(level = "debug", name = "copy_interpreter_execute_v2", skip(self), fields(ctx.id = self.ctx.get_id().as_str()))]
     async fn execute2(&self) -> Result<PipelineBuildResult> {
         match &self.plan {
@@ -485,7 +490,16 @@ impl Interpreter for CopyInterpreterV2 {
                         from,
                         copy_stage_files,
                     )
-                    .await
+                    .await?;
+
+                    let names: Vec<String> = copy_stage_files
+                        .iter()
+                        .map(|(file, _)| file.clone())
+                        .collect();
+                    PipelineBuildResult::from_blocks(vec![DataBlock::create(
+                        self.plan.schema(),
+                        vec![Series::from_data(names)],
+                    )])
                 }
                 other => Err(ErrorCode::Internal(format!(
                     "Cannot list files for the source info: {:?}",

@@ -64,6 +64,7 @@ fn has_result_set_by_plan(plan: &Plan) -> bool {
             | Plan::ExplainAst { .. }
             | Plan::ExplainSyntax { .. }
             | Plan::Call(_)
+            | Plan::Copy(_)
             | Plan::ShowCreateDatabase(_)
             | Plan::ShowCreateTable(_)
             | Plan::ShowRoles(_)
