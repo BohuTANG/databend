@@ -67,6 +67,9 @@ impl Config {
     pub fn load() -> Result<Self> {
         let cfg = OuterV0Config::load()?.try_into()?;
 
+        // Valid meta.
+        cfg.meta.check_valid()?;
+
         Ok(cfg)
     }
 
