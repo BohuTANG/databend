@@ -16,6 +16,7 @@ use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 use std::io::BufReader;
 use std::sync::Arc;
+use std::time::SystemTime;
 
 use common_arrow::arrow::array::Array;
 use common_arrow::arrow::chunk::Chunk;
@@ -49,6 +50,7 @@ use futures::TryStreamExt;
 use opendal::Object;
 use opendal::Operator;
 use tracing::debug_span;
+use tracing::log::info;
 use tracing::Instrument;
 
 use crate::fuse_part::FusePartInfo;
@@ -377,6 +379,7 @@ impl BlockReader {
         let indices = Self::build_projection_indices(&columns);
         let mut results = Vec::with_capacity(indices.len());
 
+        let s1 = SystemTime::now();
         for (index, _) in indices {
             let column_meta = &part.columns_meta[&index];
 
@@ -386,9 +389,22 @@ impl BlockReader {
             let offset = column_meta.offset;
             let length = column_meta.len;
 
+            let start = SystemTime::now();
             let result = Self::sync_read_column(op.object(&location), index, offset, length);
+            info!(
+                "read column index={}, offset={}, length={}, took: {} ms, loc:{}",
+                index,
+                offset,
+                length,
+                start.elapsed().unwrap().as_millis(),
+                location
+            );
             results.push(result?);
         }
+        info!(
+            "read one partition took: {} ms",
+            s1.elapsed().unwrap().as_millis()
+        );
 
         Ok(results)
     }
