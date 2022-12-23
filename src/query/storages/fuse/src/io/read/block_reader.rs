@@ -16,14 +16,16 @@ use std::ops::Range;
 use std::sync::Arc;
 
 use common_arrow::parquet::metadata::SchemaDescriptor;
+use common_base::base::tokio::sync::Semaphore;
 use common_base::rangemap::RangeMerger;
-use common_base::runtime::UnlimitedFuture;
+use common_base::runtime::Runtime;
 use common_catalog::plan::Projection;
 use common_catalog::table_context::TableContext;
 use common_datavalues::DataSchemaRef;
 use common_exception::ErrorCode;
 use common_exception::Result;
 use common_storage::ColumnLeaves;
+use futures_util::future;
 use opendal::Object;
 use opendal::Operator;
 
@@ -61,17 +63,42 @@ impl BlockReader {
         let range_merger = RangeMerger::from_iter(ranges, max_gap_size, max_range_size);
         let merged_ranges = range_merger.ranges();
 
-        // Read merged range data.
-        let mut read_handlers = Vec::with_capacity(merged_ranges.len());
-        for (idx, range) in merged_ranges.iter().enumerate() {
-            read_handlers.push(UnlimitedFuture::create(Self::read_range(
-                object.clone(),
-                idx,
-                range.start,
-                range.end,
-            )));
-        }
-        let merged_range_data_results = futures::future::try_join_all(read_handlers).await?;
+        // new joint,.
+        let max_runtime_threads = ctx.get_settings().get_max_threads()? as usize;
+
+        // 1.1 combine all the tasks.
+        let mut iter = merged_ranges.iter().enumerate();
+        let tasks = std::iter::from_fn(move || {
+            if let Some((idx, range)) = iter.next() {
+                Some(Self::read_range(
+                    object.clone(),
+                    idx,
+                    range.start,
+                    range.end,
+                ))
+            } else {
+                None
+            }
+        });
+
+        // 1.2 build the runtime.
+        let semaphore = Semaphore::new(merged_ranges.len());
+        let io_runtime = Arc::new(Runtime::with_worker_threads(
+            max_runtime_threads,
+            Some("io-read-worker".to_owned()),
+        )?);
+
+        // 1.3 spawn all the tasks to the runtime.
+        let join_handlers = io_runtime.try_spawn_batch(semaphore, tasks).await?;
+
+        // 1.4 get all the result.
+        let merged_range_data_results = future::try_join_all(join_handlers)
+            .await
+            .map_err(|e| {
+                ErrorCode::StorageOther(format!("try io read join futures failure, {}", e))
+            })?
+            .into_iter()
+            .collect::<Result<Vec<_>>>()?;
 
         // Build raw range data from merged range data.
         let mut final_result = Vec::with_capacity(raw_ranges.len());
