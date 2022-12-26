@@ -30,9 +30,9 @@ use tracing::info;
 
 use crate::fuse_lazy_part::FuseLazyPartInfo;
 use crate::io::BlockReader;
+use crate::operations::fuse_source::build_fuse_source_pipeline;
 use crate::operations::FuseTableSource;
 use crate::FuseTable;
-use crate::operations::fuse_source::build_fuse_source_pipeline;
 
 /// Read data kind to avoid OOM.
 pub enum ReadDataKind {
@@ -146,12 +146,24 @@ impl FuseTable {
             });
         }
 
-        assert!(plan.push_downs.as_ref().and_then(|s| s.prewhere.as_ref()).is_none());
+        assert!(
+            plan.push_downs
+                .as_ref()
+                .and_then(|s| s.prewhere.as_ref())
+                .is_none()
+        );
 
         let block_reader = self.build_block_reader(plan)?;
-        let projection = PushDownInfo::projection_of_push_downs(&self.table_info.schema(), &plan.push_downs);
+        let projection =
+            PushDownInfo::projection_of_push_downs(&self.table_info.schema(), &plan.push_downs);
         let max_io_requests = self.adjust_io_request(&ctx, &projection, read_kind)?;
 
-        build_fuse_source_pipeline(ctx, pipeline, self.storage_format, block_reader, max_io_requests)
+        build_fuse_source_pipeline(
+            ctx,
+            pipeline,
+            self.storage_format,
+            block_reader,
+            max_io_requests,
+        )
     }
 }

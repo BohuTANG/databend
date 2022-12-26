@@ -233,6 +233,20 @@ impl TableContext for QueryContext {
         self.partition_queue.write().pop_front()
     }
 
+    fn try_get_parts(&self, n: usize) -> Option<Vec<PartInfoPtr>> {
+        let mut res = Vec::with_capacity(n);
+        let mut queue = self.partition_queue.write();
+        for _ in 0..n {
+            if let Some(t) = queue.pop_front() {
+                res.push(t);
+            } else {
+                break;
+            }
+        }
+
+        if res.is_empty() { None } else { Some(res) }
+    }
+
     // Update the context partition pool from the pipeline builder.
     fn try_set_partitions(&self, partitions: Partitions) -> Result<()> {
         let mut partition_queue = self.partition_queue.write();

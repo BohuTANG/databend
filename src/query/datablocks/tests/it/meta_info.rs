@@ -29,6 +29,14 @@ impl BlockMetaInfo for TestMetaInfoA {
         self
     }
 
+    fn as_mut_any(&mut self) -> &mut dyn Any {
+        todo!()
+    }
+
+    fn clone_self(&self) -> Box<dyn BlockMetaInfo> {
+        todo!()
+    }
+
     fn equals(&self, info: &Box<dyn BlockMetaInfo>) -> bool {
         match info.as_any().downcast_ref::<TestMetaInfoA>() {
             None => false,
@@ -47,6 +55,14 @@ struct TestPartInfoB {
 impl BlockMetaInfo for TestPartInfoB {
     fn as_any(&self) -> &dyn Any {
         self
+    }
+
+    fn as_mut_any(&mut self) -> &mut dyn Any {
+        todo!()
+    }
+
+    fn clone_self(&self) -> Box<dyn BlockMetaInfo> {
+        todo!()
     }
 
     fn equals(&self, info: &Box<dyn BlockMetaInfo>) -> bool {

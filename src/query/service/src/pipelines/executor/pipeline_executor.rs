@@ -39,7 +39,7 @@ use crate::pipelines::pipeline::Pipeline;
 pub type InitCallback = Arc<Box<dyn Fn() -> Result<()> + Send + Sync + 'static>>;
 
 pub type FinishedCallback =
-Arc<Box<dyn Fn(&Option<ErrorCode>) -> Result<()> + Send + Sync + 'static>>;
+    Arc<Box<dyn Fn(&Option<ErrorCode>) -> Result<()> + Send + Sync + 'static>>;
 
 pub struct PipelineExecutor {
     threads_num: usize,
@@ -238,7 +238,7 @@ impl PipelineExecutor {
         for thread_num in 0..threads {
             let this = self.clone();
             #[allow(unused_mut)]
-                let mut name = Some(format!("PipelineExecutor-{}", thread_num));
+            let mut name = Some(format!("PipelineExecutor-{}", thread_num));
 
             #[cfg(debug_assertions)]
             {
