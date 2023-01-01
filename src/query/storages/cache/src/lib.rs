@@ -24,3 +24,4 @@ pub use providers::FileCache;
 pub use providers::MemoryBytesCache;
 pub use providers::MemoryItemsCache;
 pub use settings::CacheSettings;
+pub use settings::SerializedType;

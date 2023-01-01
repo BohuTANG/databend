@@ -2485,6 +2485,7 @@ dependencies = [
  "common-datablocks",
  "common-datavalues",
  "common-exception",
+ "common-storages-cache",
  "metrics",
  "once_cell",
  "opendal",

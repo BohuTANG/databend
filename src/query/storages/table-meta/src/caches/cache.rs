@@ -17,6 +17,9 @@ use std::sync::Arc;
 use common_base::base::GlobalInstance;
 use common_config::QueryConfig;
 use common_exception::Result;
+use common_storages_cache::CacheSettings;
+use common_storages_cache::MemoryItemsCache;
+use common_storages_cache::SerializedType;
 
 use crate::caches::memory_cache::new_bytes_cache;
 use crate::caches::memory_cache::new_item_cache;
@@ -25,6 +28,7 @@ use crate::caches::memory_cache::BloomIndexMetaCache;
 use crate::caches::memory_cache::FileMetaDataCache;
 use crate::caches::memory_cache::LabeledBytesCache;
 use crate::caches::memory_cache::LabeledItemCache;
+use crate::caches::memory_cache::SegmentInfoCacheV2;
 use crate::caches::SegmentInfoCache;
 use crate::caches::TableSnapshotCache;
 use crate::caches::TableSnapshotStatisticCache;
@@ -42,6 +46,7 @@ static DEFAULT_FILE_META_DATA_CACHE_ITEMS: u64 = 3000;
 pub struct CacheManager {
     table_snapshot_cache: Option<TableSnapshotCache>,
     segment_info_cache: Option<SegmentInfoCache>,
+    segment_info_cache_v2: Option<Arc<SegmentInfoCacheV2>>,
     bloom_index_data_cache: Option<BloomIndexCache>,
     bloom_index_meta_cache: Option<BloomIndexMetaCache>,
     file_meta_data_cache: Option<FileMetaDataCache>,
@@ -57,6 +62,7 @@ impl CacheManager {
             GlobalInstance::set(Arc::new(Self {
                 table_snapshot_cache: None,
                 segment_info_cache: None,
+                segment_info_cache_v2: None,
                 bloom_index_data_cache: None,
                 bloom_index_meta_cache: None,
                 file_meta_data_cache: None,
@@ -70,12 +76,20 @@ impl CacheManager {
                 Self::new_bytes_cache(config.table_cache_bloom_index_data_bytes);
             let bloom_index_meta_cache =
                 Self::new_item_cache(config.table_cache_bloom_index_meta_count);
-
             let file_meta_data_cache = Self::new_item_cache(DEFAULT_FILE_META_DATA_CACHE_ITEMS);
+
+            // V2.
+            let segment_info_cache_v2 = Some(Arc::new(MemoryItemsCache::create(&CacheSettings {
+                memory_items_cache_capacity: config.table_cache_segment_count,
+                memory_items_cache_serialize_type: SerializedType::Json,
+                memory_bytes_cache_capacity: 0,
+                cache_on_write: false,
+            })));
 
             GlobalInstance::set(Arc::new(Self {
                 table_snapshot_cache,
                 segment_info_cache,
+                segment_info_cache_v2,
                 bloom_index_data_cache,
                 bloom_index_meta_cache,
                 file_meta_data_cache,
@@ -100,6 +114,10 @@ impl CacheManager {
 
     pub fn get_table_segment_cache(&self) -> Option<SegmentInfoCache> {
         self.segment_info_cache.clone()
+    }
+
+    pub fn get_table_segment_cache_v2(&self) -> Option<Arc<SegmentInfoCacheV2>> {
+        self.segment_info_cache_v2.clone()
     }
 
     pub fn get_bloom_index_cache(&self) -> Option<BloomIndexCache> {
