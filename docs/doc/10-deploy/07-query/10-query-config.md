@@ -5,7 +5,7 @@ description:
   Query Server Configuration
 ---
 
-The configuration file `databend-query.toml` contains settings for configuring the Databend query server. Additionally, you can configure more settings for the query server with the script `databend-query`. To find out the available settings with the script, refer to the script's help information:
+The configuration file `databend-query.toml` contains settings for configuring the databend-query server. Additionally, you can configure more settings for the query server with the script `databend-query`. To find out the available settings with the script, refer to the script's help information:
 
 ```bash
 ./databend-query -h
@@ -17,7 +17,7 @@ This topic explains the settings you can find in the configuration file `databen
 You can find [sample configuration files](https://github.com/datafuselabs/databend/tree/main/scripts/ci/deploy/config) on GitHub that set up Databend for various deployment environments. These files were created for internal testing ONLY. Please do NOT modify them for your own purposes. But if you have a similar deployment, it is a good idea to reference them when editing your own configuration files.
 :::
 
-## 1. Logging Config
+## Logging Config
 
 ### log.file
 
@@ -36,7 +36,7 @@ You can find [sample configuration files](https://github.com/datafuselabs/databe
     - `text`: Databend outputs plain text logs.
     - `json`: Databend outputs logs in JSON format.
 
-## 2. Meta Service Config
+## Meta Service Config
 
 ### username
 
@@ -72,7 +72,7 @@ You can find [sample configuration files](https://github.com/datafuselabs/databe
 * This setting only takes effect when Databend-query works with remote meta service(`endpoints` is not empty). You don't need to configure it for standalone Databend.
 * Default: 60
 
-## 3. Query config
+## Query config
 
 ### admin_api_address
 
@@ -135,11 +135,11 @@ You can find [sample configuration files](https://github.com/datafuselabs/databe
 * Env variable: `QUERY_CLUSTER_ID`
 
 
-## 4. Storage config
+## Storage config
 
 ### type
 
-* Which storage type(Must one of `"fs"` | `"s3"` | `"azblob"` | `"obs"`) should use for the databend-query, e.g., `"s3"`.
+* Which storage type(Must one of `"s3"` | `"azblob"` | `"obs"`) should use for the databend-query, e.g., `"s3"`.
 * Default: `""`
 * Env variable: `STORAGE_TYPE`
 * Required.
@@ -170,7 +170,7 @@ You can find [sample configuration files](https://github.com/datafuselabs/databe
 
 * AWS S3 secret_access_key.
 * Default: `""`
-* Env variable: `STORAGE_S3SECRET_ACCESS_KEY`
+* Env variable: `STORAGE_S3_SECRET_ACCESS_KEY`
 * Required.
 
 ### storage.azblob
