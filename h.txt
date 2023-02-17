@@ -1,0 +1,393 @@
+databend-query v0.9.39-nightly-8da663d(rust-1.68.0-nightly-2023-02-16T04:51:36.971172Z)
+Config for `query`
+
+USAGE:
+    databend-query [OPTIONS]
+
+OPTIONS:
+        --admin-api-address <ADMIN_API_ADDRESS>
+            [default: 127.0.0.1:8080]
+
+        --api-tls-server-cert <API_TLS_SERVER_CERT>
+            [default: ]
+
+        --api-tls-server-key <API_TLS_SERVER_KEY>
+            [default: ]
+
+        --api-tls-server-root-ca-cert <API_TLS_SERVER_ROOT_CA_CERT>
+            [default: ]
+
+        --async-insert-busy-timeout <ASYNC_INSERT_BUSY_TIMEOUT>
+            The maximum timeout in milliseconds since the first insert before inserting collected
+            data [default: 200]
+
+        --async-insert-max-data-size <ASYNC_INSERT_MAX_DATA_SIZE>
+            The maximum memory size of the buffered data collected per insert before being inserted
+            [default: 10000]
+
+        --async-insert-stale-timeout <ASYNC_INSERT_STALE_TIMEOUT>
+            The maximum timeout in milliseconds since the last insert before inserting collected
+            data [default: 0]
+
+        --auto-sync-interval <AUTO_SYNC_INTERVAL>
+            AutoSyncInterval is the interval to update endpoints with its latest members. 0 disables
+            auto-sync. By default auto-sync is disabled [default: 0]
+
+    -c, --config-file <CONFIG_FILE>
+            [default: ]
+
+        --cache-data-cache-population-queue-size <TABLE_DATA_CACHE_POPULATION_QUEUE_SIZE>
+            Max size of external cache population queue length [default: 65536]
+
+        --cache-data-cache-storage <DATA_CACHE_STORAGE>
+            Type of data cache storage [default: none] [possible values: none, disk]
+
+        --cache-disk-max-bytes <MAX_BYTES>
+            Max bytes of cached raw table data. Default 20GB, set it to 0 to disable it [default:
+            21474836480]
+
+        --cache-disk-path <PATH>
+            Table disk cache root path [default: ./.databend/_cache]
+
+        --cache-enable-table-bloom-index-cache <enable-table-bloom-index-cache>
+            Enable bloom index cache. Default is enabled. Set it to false to disable all the bloom
+            index caches [default: true]
+
+        --cache-enable-table-meta-cache <enable-table-meta-cache>
+            Enable table meta cache. Default is enabled. Set it to false to disable all the table
+            meta caches [default: true]
+
+        --cache-table-bloom-index-filter-count <TABLE_BLOOM_INDEX_FILTER_COUNT>
+            Max number of cached bloom index filters. Set it to 0 to disable it [default: 1048576]
+
+        --cache-table-bloom-index-meta-count <TABLE_BLOOM_INDEX_META_COUNT>
+            Max number of cached bloom index meta objects. Set it to 0 to disable it [default: 3000]
+
+        --cache-table-data-deserialized-data-bytes <TABLE_DATA_DESERIALIZED_DATA_BYTES>
+            Max size of in memory table column object cache. By default it is 0 (disabled) [default:
+            0]
+
+        --cache-table-meta-segment-count <TABLE_META_SEGMENT_COUNT>
+            Max number of cached table segment [default: 10240]
+
+        --cache-table-meta-snapshot-count <TABLE_META_SNAPSHOT_COUNT>
+            Max number of cached table snapshot [default: 256]
+
+        --cache-table-meta-statistic-count <TABLE_META_STATISTIC_COUNT>
+            Max number of cached table statistic meta [default: 256]
+
+        --clickhouse-handler-host <CLICKHOUSE_HANDLER_HOST>
+            [default: 127.0.0.1]
+
+        --clickhouse-handler-port <CLICKHOUSE_HANDLER_PORT>
+            [default: 9000]
+
+        --clickhouse-http-handler-host <CLICKHOUSE_HTTP_HANDLER_HOST>
+            [default: 127.0.0.1]
+
+        --clickhouse-http-handler-port <CLICKHOUSE_HTTP_HANDLER_PORT>
+            [default: 8124]
+
+        --cluster-id <CLUSTER_ID>
+            ID for construct the cluster [default: ]
+
+        --cmd <CMD>
+            Run a command and quit [default: ]
+
+        --database-engine-github-enabled <DATABASE_ENGINE_GITHUB_ENABLED>
+            Deprecated: Database engine github enabled [default: true]
+
+        --flight-api-address <FLIGHT_API_ADDRESS>
+            [default: 127.0.0.1:9090]
+
+    -h, --help
+            Print help information
+
+        --hive-meta-store-address <META_STORE_ADDRESS>
+            [default: ]
+
+        --hive-thrift-protocol <PROTOCOL>
+            [default: ]
+
+        --http-handler-host <HTTP_HANDLER_HOST>
+            [default: 127.0.0.1]
+
+        --http-handler-port <HTTP_HANDLER_PORT>
+            [default: 8000]
+
+        --http-handler-result-timeout-secs <HTTP_HANDLER_RESULT_TIMEOUT_SECS>
+            [default: 60]
+
+        --http-handler-tls-server-cert <HTTP_HANDLER_TLS_SERVER_CERT>
+            [default: ]
+
+        --http-handler-tls-server-key <HTTP_HANDLER_TLS_SERVER_KEY>
+            [default: ]
+
+        --http-handler-tls-server-root-ca-cert <HTTP_HANDLER_TLS_SERVER_ROOT_CA_CERT>
+            [default: ]
+
+        --internal-enable-sandbox-tenant
+            
+
+        --jwt-key-file <JWT_KEY_FILE>
+            Deprecated: jwt_key_file is deprecated, use jwt_key_files to add a list of available
+            jwks url [default: ]
+
+        --log-dir <DIR>
+            Log file dir [default: ./.databend/logs]
+
+        --log-file-dir <FILE_DIR>
+            Log file dir [default: ./.databend/logs]
+
+        --log-file-format <FILE_FORMAT>
+            Log file format [default: json]
+
+        --log-file-level <FILE_LEVEL>
+            [default: INFO]
+
+        --log-file-on <file-on>
+            Log level <DEBUG|INFO|ERROR> [default: true]
+
+        --log-level <LEVEL>
+            Log level <DEBUG|INFO|ERROR> [default: INFO]
+
+        --log-query-enabled
+            Log file dir
+
+        --log-stderr-format <STDERR_FORMAT>
+            [default: text]
+
+        --log-stderr-level <STDERR_LEVEL>
+            [default: INFO]
+
+        --log-stderr-on
+            Log level <DEBUG|INFO|ERROR>
+
+        --management-mode
+            If in management mode, only can do some meta level operations(database/table/user/stage
+            etc.) with metasrv
+
+        --max-active-sessions <MAX_ACTIVE_SESSIONS>
+            [default: 256]
+
+        --max-memory-limit-enabled <MAX_MEMORY_LIMIT_ENABLED>
+            [default: false]
+
+        --max-query-log-size <MAX_QUERY_LOG_SIZE>
+            [default: 10000]
+
+        --max-server-memory-usage <MAX_SERVER_MEMORY_USAGE>
+            The max total memory in bytes that can be used by this process [default: 0]
+
+        --meta-client-timeout-in-second <CLIENT_TIMEOUT_IN_SECOND>
+            Timeout for each client request, in seconds [default: 10]
+
+        --meta-embedded-dir <EMBEDDED_DIR>
+            The dir to store persisted meta state for a embedded meta store [default: ]
+
+        --meta-endpoints <ENDPOINTS>
+            MetaStore peers endpoints
+
+        --meta-password <PASSWORD>
+            MetaStore backend user password [default: ]
+
+        --meta-rpc-tls-meta-server-root-ca-cert <RPC_TLS_META_SERVER_ROOT_CA_CERT>
+            Certificate for client to identify meta rpc serve [default: ]
+
+        --meta-rpc-tls-meta-service-domain-name <RPC_TLS_META_SERVICE_DOMAIN_NAME>
+            [default: localhost]
+
+        --meta-username <USERNAME>
+            MetaStore backend user name [default: root]
+
+        --metric-api-address <METRIC_API_ADDRESS>
+            [default: 127.0.0.1:7070]
+
+        --mysql-handler-host <MYSQL_HANDLER_HOST>
+            [default: 127.0.0.1]
+
+        --mysql-handler-port <MYSQL_HANDLER_PORT>
+            [default: 3307]
+
+        --num-cpus <NUM_CPUS>
+            [default: 0]
+
+        --rpc-tls-query-server-root-ca-cert <RPC_TLS_QUERY_SERVER_ROOT_CA_CERT>
+            Certificate for client to identify query rpc server [default: ]
+
+        --rpc-tls-query-service-domain-name <RPC_TLS_QUERY_SERVICE_DOMAIN_NAME>
+            [default: localhost]
+
+        --rpc-tls-server-cert <RPC_TLS_SERVER_CERT>
+            rpc server cert [default: ]
+
+        --rpc-tls-server-key <RPC_TLS_SERVER_KEY>
+            key for rpc server cert [default: ]
+
+        --share-endpoint-address <SHARE_ENDPOINT_ADDRESS>
+            [default: ]
+
+        --share-endpoint-auth-token-file <SHARE_ENDPOINT_AUTH_TOKEN_FILE>
+            [default: ]
+
+        --sql <SQL>
+            [default: "SELECT 1"]
+
+        --storage-allow-insecure
+            
+
+        --storage-azblob-account-key <ACCOUNT_KEY>
+            Master key for Azblob [default: ]
+
+        --storage-azblob-account-name <ACCOUNT_NAME>
+            Account for Azblob [default: ]
+
+        --storage-azblob-container <CONTAINER>
+            Container for Azblob [default: ]
+
+        --storage-azblob-endpoint-url <AZBLOB_ENDPOINT_URL>
+            Endpoint URL for Azblob [default: ]
+
+        --storage-azblob-root <AZBLOB_ROOT>
+            # TODO(xuanwo) [default: ]
+
+        --storage-fs-data-path <DATA_PATH>
+            fs storage backend data path [default: _data]
+
+        --storage-gcs-bucket <GCS_BUCKET>
+            [default: ]
+
+        --storage-gcs-credential <CREDENTIAL>
+            [default: ]
+
+        --storage-gcs-endpoint-url <GCS_ENDPOINT_URL>
+            [default: https://storage.googleapis.com]
+
+        --storage-gcs-root <GCS_ROOT>
+            [default: ]
+
+        --storage-hdfs-name-node <NAME_NODE>
+            [default: ]
+
+        --storage-hdfs-root <HDFS_ROOT>
+            # TODO(xuanwo) [default: ]
+
+        --storage-num-cpus <STORAGE_NUM_CPUS>
+            [default: 0]
+
+        --storage-obs-access-key-id <OBS_ACCESS_KEY_ID>
+            Access key for OBS storage [default: ]
+
+        --storage-obs-bucket <OBS_BUCKET>
+            Bucket for OBS [default: ]
+
+        --storage-obs-endpoint-url <OBS_ENDPOINT_URL>
+            Endpoint URL for OBS [default: ]
+
+        --storage-obs-root <OBS_ROOT>
+            # TODO(xuanwo) [default: ]
+
+        --storage-obs-secret-access-key <OBS_SECRET_ACCESS_KEY>
+            Secret key for OBS storage [default: ]
+
+        --storage-oss-access-key-id <OSS_ACCESS_KEY_ID>
+            Access key id for OSS storage [default: ]
+
+        --storage-oss-access-key-secret <OSS_ACCESS_KEY_SECRET>
+            Access Key Secret for OSS storage [default: ]
+
+        --storage-oss-bucket <OSS_BUCKET>
+            Bucket for OSS [default: ]
+
+        --storage-oss-endpoint-url <OSS_ENDPOINT_URL>
+            [default: ]
+
+        --storage-oss-presign-endpoint-url <OSS_PRESIGN_ENDPOINT_URL>
+            [default: ]
+
+        --storage-oss-root <OSS_ROOT>
+            [default: ]
+
+        --storage-s3-access-key-id <ACCESS_KEY_ID>
+            Access key for S3 storage [default: ]
+
+        --storage-s3-bucket <BUCKET>
+            S3 Bucket to use for storage [default: ]
+
+        --storage-s3-enable-virtual-host-style
+            
+
+        --storage-s3-endpoint-url <ENDPOINT_URL>
+            Endpoint URL for S3 storage [default: https://s3.amazonaws.com]
+
+        --storage-s3-external-id <S3_EXTERNAL_ID>
+            [default: ]
+
+        --storage-s3-master-key <MASTER_KEY>
+            [default: ]
+
+        --storage-s3-region <REGION>
+            Region for S3 storage [default: ]
+
+        --storage-s3-role-arn <S3_ROLE_ARN>
+            [default: ]
+
+        --storage-s3-root <ROOT>
+            <root> [default: ]
+
+        --storage-s3-secret-access-key <SECRET_ACCESS_KEY>
+            Secret key for S3 storage [default: ]
+
+        --storage-s3-security-token <SECURITY_TOKEN>
+            Security token for S3 storage [default: ]
+
+        --storage-type <STORAGE_TYPE>
+            [default: fs]
+
+        --table <TABLE>
+            [default: ]
+
+        --table-cache-block-meta-count <TABLE_CACHE_BLOCK_META_COUNT>
+            OBSOLETED: Max number of cached table block meta
+
+        --table-cache-bloom-index-filter-count <TABLE_CACHE_BLOOM_INDEX_FILTER_COUNT>
+            OBSOLETED: Max number of cached bloom index filters, default value is 1024 * 1024 items.
+            One bloom index filter per column of data block being indexed will be generated if
+            necessary
+
+        --table-cache-bloom-index-meta-count <TABLE_CACHE_BLOOM_INDEX_META_COUNT>
+            OBSOLETED: Max number of cached bloom index meta objects
+
+        --table-cache-segment-count <TABLE_CACHE_SEGMENT_COUNT>
+            OBSOLETED: Max number of cached table segment
+
+        --table-cache-snapshot-count <TABLE_CACHE_SNAPSHOT_COUNT>
+            OBSOLETED: Max number of cached table snapshot
+
+        --table-cache-statistic-count <TABLE_CACHE_STATISTIC_COUNT>
+            OBSOLETED: Max number of cached table snapshot statistics
+
+        --table-disk-cache-mb-size <TABLE_DISK_CACHE_MB_SIZE>
+            OBSOLETED: Table disk cache size (mb)
+
+        --table-disk-cache-root <TABLE_DISK_CACHE_ROOT>
+            OBSOLETED: Table disk cache folder root
+
+        --table-engine-memory-enabled <TABLE_ENGINE_MEMORY_ENABLED>
+            Table engine memory enabled [default: true]
+
+        --table-memory-cache-mb-size <TABLE_MEMORY_CACHE_MB_SIZE>
+            OBSOLETED: Table memory cache size (mb)
+
+        --table-meta-cache-enabled <TABLE_META_CACHE_ENABLED>
+            OBSOLETED: Table Meta Cached enabled
+
+        --tenant-id <TENANT_ID>
+            Tenant id for get the information from the MetaSrv [default: admin]
+
+    -V, --version
+            Print version information
+
+        --wait-timeout-mills <WAIT_TIMEOUT_MILLS>
+            [default: 5000]
