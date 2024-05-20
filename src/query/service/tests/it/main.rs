@@ -20,6 +20,7 @@
 #![recursion_limit = "256"]
 
 extern crate core;
+
 mod auth;
 mod catalogs;
 mod clusters;
@@ -38,3 +39,4 @@ mod sql;
 mod storages;
 mod table_functions;
 mod tests;
+mod io;
