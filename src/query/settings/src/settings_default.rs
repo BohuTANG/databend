@@ -909,6 +909,12 @@ impl DefaultSettings {
                     mode: SettingMode::Both,
                     range: Some(SettingRange::Numeric(0..=u64::MAX)),
                 }),
+                ("short_sql_max_length", DefaultSettingValue {
+                    value: UserSettingValue::UInt64(128), // Default max length
+                    desc: "Maximum length for displaying SQL queries in logs and error messages. Longer queries will be truncated.",
+                    mode: SettingMode::Both,
+                    range: Some(SettingRange::Numeric(1..=1024*1024)),
+                }),
             ]);
 
             Ok(Arc::new(DefaultSettings {

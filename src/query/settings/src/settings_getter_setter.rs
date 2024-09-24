@@ -748,4 +748,8 @@ impl Settings {
     pub fn get_max_spill_io_requests(&self) -> Result<u64> {
         self.try_get_u64("max_spill_io_requests")
     }
+
+    pub fn get_short_sql_max_length(&self) -> Result<u64> {
+        self.try_get_u64("short_sql_max_length")
+    }
 }
