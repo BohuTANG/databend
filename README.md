@@ -1,96 +1,102 @@
+<h1 align="center">Databend: The Next-Gen Cloud [Data+AI] Analytics</h1>
+<h2 align="center">One SQL for All Data: structured, semi-structured & unstructured multimodal data</h2>
+
 <div align="center">
-<h1>Databend</h1>
-<strong>The Open Source Cloud Warehouse for Everyone</strong>
-<br>
- https://databend.rs
-<br>
-<br>
+
+<h4 align="center">
+  <a href="https://docs.databend.com/guides/cloud">Databend Serverless Cloud (beta)</a>  |
+  <a href="https://docs.databend.com/">Documentation</a>  |
+  <a href="https://benchmark.clickhouse.com/">Benchmarking</a>  |
+  <a href="https://github.com/databendlabs/databend/issues/11868">Roadmap (v1.3)</a>
+</h4>
 
 <div>
-<a href="https://join.slack.com/t/datafusecloud/shared_invite/zt-nojrc9up-50IRla1Y1h56rqwCTkkDJA">
-<img src="https://badgen.net/badge/Slack/Join%20Databend/0abd59?icon=slack" alt="slack" />
+<a href="https://link.databend.com/join-slack">
+<img src="https://img.shields.io/badge/slack-databend-0abd59?logo=slack" alt="slack" />
 </a>
 
-<a href="https://github.com/datafuselabs/databend/actions">
-<img src="https://github.com/datafuselabs/databend/actions/workflows/unit-tests.yml/badge.svg" alt="CI Status" />
+<a href="https://github.com/databendlabs/databend/actions/workflows/release.yml">
+<img src="https://img.shields.io/github/actions/workflow/status/datafuselabs/databend/release.yml?branch=main" alt="CI Status" />
 </a>
 
-<a href="https://codecov.io/gh/datafuselabs/databend">
-<img src="https://codecov.io/gh/datafuselabs/databend/branch/master/graph/badge.svg" alt="codecov" />
-</a>
+<img src="https://img.shields.io/badge/Platform-Linux%2C%20macOS%2C%20ARM-green.svg?style=flat" alt="Linux Platform" />
 
-<img src="https://img.shields.io/badge/Platform-Linux,%20ARM,%20OS%20X,%20Windows-green.svg?style=flat" alt="patform" />
-
-<a href="https://opensource.org/licenses/Apache-2.0">
-<img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="license" />
+<a href="https://gurubase.io/g/databend">
+<img src="https://img.shields.io/badge/Gurubase-Ask%20Databend%20Guru-006BFF" alt="Gurubase" />
 </a>
 
 </div>
 </div>
-<br>
 
-- [What is Databend?](#what-is-databend)
-- [Design Overview](#design-overview)
-   - [Meta Service Layer](#meta-service-layer)
-   - [Compute Layer](#compute-layer)
-   - [Storage Layer](#storage-layer)
-- [Getting Started](#getting-started)
-- [Roadmap](#roadmap)
+<img src="https://github.com/databendlabs/databend/assets/172204/9997d8bc-6462-4dbd-90e3-527cf50a709c" alt="databend" />
 
-## What is Databend?
+## The AI-Native Data Warehouse
 
-Databend aimed to be an open source **elastic** and **reliable** cloud warehouse, it offers blazing fast query and combines elasticity, simplicity, low cost of the cloud, built to make the Data Cloud easy.
+Databend is the **open-source alternative to Snowflake** with **near 100% SQL compatibility** and native AI capabilities. Built in Rust with MPP architecture and S3-native storage, Databend unifies structured tables, JSON documents, and vector embeddings in a single platform. Trusted by **world-class enterprises** managing **800+ petabytes** and **100+ million queries daily**.
 
-Databend design principles:
-1. **Elastic**  In Databend, storage and compute resources can dynamically scale up and down on demand.
-2. **Secure** All data files and network traffic in Databend is encrypted end-to-end, and provide Role Based Access Control in SQL level.
-3. **User-friendly** Databend is an ANSI SQL compliant cloud warehouse, it is easy for data scientist and engineers to use.
-4. **Cost-efficient** Databend processes queries with high performance, and the user only pays for what is actually used.
+## Key Features
 
-## Design Overview
+**Performance & Scale**
+- **10x Faster**: Rust-powered vectorized execution with SIMD optimization
+- **90% Cost Reduction**: S3-native storage eliminates proprietary overhead
+- **Infinite Scale**: True compute-storage separation with elastic scaling
+- **Production-Proven**: Powers financial analytics, ML pipelines, and real-time AI inference
 
-![Databend Architecture](https://datafuse-1253727613.cos.ap-hongkong.myqcloud.com/arch/datafuse-arch-20210817.svg)
+**Enterprise Ready**
+- **Snowflake Compatible**: Migrate with zero SQL rewrites
+- **Multi-Cloud**: Deploy on AWS, Azure, GCP, or on-premise
+- **Security**: Role-based access, data masking, audit logging
+- **No Vendor Lock-in**: Complete data sovereignty and control
 
-Databend is inspired by [ClickHouse](https://github.com/clickhouse/clickhouse) and its computing model is based on [apache-arrow](https://arrow.apache.org/).
+## Performance Benchmarks
 
-Databend consists of three components: `meta service` layer, and the  decoupled `compute` and `storage` layers.
+[TPC-H Benchmark: Databend vs. Snowflake](https://docs.databend.com/guides/benchmark/tpch) | [Data Ingestion Benchmark](https://docs.databend.com/guides/benchmark/data-ingest) | [ClickBench Results](https://databend.com/blog/clickbench-databend-top)
 
-### Meta Service Layer
+## Architecture
 
-The meta service is a layer to service multiple tenants.
-In current implementation, the meta service has components:
-* **Metadata** - Which manages all metadata of databases, tables, clusters, the transaction, etc.
-* **Administration** Which stores user info, user management, access control information, usage statistics, etc.
-* **Security** Which performs authorization and authentication to protect the privacy of users' data.
+![Databend Architecture](https://github.com/databendlabs/databend/assets/172204/68b1adc6-0ec1-41d4-9e1d-37b80ce0e5ef)
 
-### Compute Layer
+**Unified Foundation**: S3-native storage + MPP query engine + elastic compute clusters
 
-The compute layer is the clusters that running computing workloads, each cluster have many nodes, each node has components:
-* **Planner** - Builds execution plan from the user's SQL statement.
-* **Optimizer** - Optimizer rules like predicate push down or pruning of unused columns.
-* **Processors** - Vector-based query execution pipeline, which is build by planner instructions.
-* **Cache** - Caching Data and Indexes based on the version.
+### Universal Data Processing by Type
+- **Structured**: Standard SQL with vectorized execution, ACID transactions, enterprise security, and BI integration
+- **Semi-Structured**: [VARIANT data type](https://docs.databend.com/sql/sql-reference/data-types/variant) with [virtual columns](https://docs.databend.com/guides/performance/virtual-column) for zero-config automatic JSON acceleration
+- **Unstructured**: [Vector data type](https://docs.databend.com/sql/sql-reference/data-types/vector) with HNSW indexing, [AI functions](https://docs.databend.com/sql/sql-functions/ai-functions/), and [full-text search](https://docs.databend.com/guides/performance/fulltext-index) for multimodal workloads
 
-Many clusters can attach the same database, so they can serve the query in parallel by different users.
+## Quick Start
 
-### Storage Layer
+### Cloud
+[Start with Databend Cloud](https://docs.databend.com/guides/cloud/) - Production-ready in 60 seconds
 
-Databend stores data in an efficient, columnar format as Parquet files.
-For efficient pruning, Databend also creates indexes for each Parquet file to speed up the queries.
+### Self-Hosted
+[Installation Guide](https://docs.databend.com/guides/deploy/QuickStart/) - Deploy anywhere with full control
 
-## Getting Started
+### Connect
+[BendSQL CLI](https://docs.databend.com/guides/sql-clients/bendsql) | [Developers Guide](https://docs.databend.com/guides/sql-clients/developers/) 
 
-* [Quick Start](https://databend.rs/overview/building-and-running/)
-* [Whitepapers](https://databend.rs/overview/architecture/)
-* [Performance](https://databend.rs/overview/performance/)
-* [CLI Design](https://databend.rs/rfcs/cli/0001-cli-design/)
-* [Contributing](https://databend.rs/development/contributing/)
-* [Databend Weekly](https://datafuselabs.github.io/weekly/)
 
-## Roadmap
+## Products & Community
 
-Databend is currently in **Alpha** and is not ready to be used in production, [Roadmap 2021](https://github.com/datafuselabs/databend/issues/746)
+**Products**
+- **Open Source**: 100% open source, complete data sovereignty
+- **[Databend Cloud](https://databend.com)**: Managed service with serverless autoscaling
+- **Enterprise**: Advanced governance, compliance, and support
 
-## License
+**Community**
+- **Connect**: [Slack](https://link.databend.com/join-slack) | [GitHub](https://github.com/databendlabs/databend) | [Twitter](https://twitter.com/DatabendLabs/)
+- **Contribute**: [Good First Issues](https://link.databend.com/i-m-feeling-lucky) | [Build Guide](https://docs.databend.com/developer/community/contributor/building-from-source)
 
-Databend is licensed under [Apache 2.0](LICENSE).
+**Your merged code gets you into the `system.contributors` table. Forever.**
+
+## Roadmap & License
+
+- **Roadmap**: [2025 Development Plan](https://github.com/databendlabs/databend/issues/14167)
+- **License**: [Apache License 2.0](licenses/Apache-2.0.txt) + [Elastic License 2.0](licenses/Elastic.txt) | [Licensing FAQs](https://docs.databend.com/guides/products/dee/license)
+
+## Acknowledgement
+
+**Inspiration**: [ClickHouse](https://github.com/clickhouse/clickhouse) and [Snowflake](https://docs.snowflake.com/en/user-guide/intro-key-concepts.html#snowflake-architecture) | **Foundation**: Apache Arrow | **Hosting**: [Vercel](https://vercel.com/?utm_source=databend&utm_campaign=oss)
+
+---
+
+*Built by engineers who redefine what's possible with data.*
