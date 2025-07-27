@@ -82,13 +82,12 @@ Databend is the **open-source alternative to Snowflake** with **near 100% SQL co
 
 ## Community
 
-For guidance on using Databend, start with the [official documentation](https://docs.databend.com/). For further assistance, join our community:
+For guidance on using Databend, we recommend starting with the official documentation. If you need further assistance, explore the following community channels:
 
-- **[Slack](https://link.databend.com/join-slack)** - Live discussion with the community
-- **[GitHub](https://github.com/databendlabs/databend)** - Feature requests, bug reports, and contributions
-- **[Twitter](https://twitter.com/DatabendLabs/)** - Latest news and updates
-- **[Good First Issues](https://link.databend.com/i-m-feeling-lucky)** - Start contributing today
-- **[Build Guide](https://docs.databend.com/developer/community/contributor/building-from-source)** - Development setup
+- [Slack](https://link.databend.com/join-slack) (For live discussion with the Community)
+- [GitHub](https://github.com/databendlabs/databend) (Feature/Bug reports, Contributions)
+- [Twitter](https://twitter.com/DatabendLabs/) (Get the news fast)
+- [I'm feeling lucky](https://link.databend.com/i-m-feeling-lucky) (Pick up a good first issue now!)
 
 **Your merged code gets you into the `system.contributors` table. Forever.**
 
