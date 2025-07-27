@@ -74,17 +74,21 @@ Databend is the **open-source alternative to Snowflake** with **near 100% SQL co
 ### Connect
 [BendSQL CLI](https://docs.databend.com/guides/sql-clients/bendsql) | [Developers Guide](https://docs.databend.com/guides/sql-clients/developers/) 
 
+## Products
 
-## Products & Community
-
-**Products**
 - **Open Source**: 100% open source, complete data sovereignty
 - **[Databend Cloud](https://databend.com)**: Managed service with serverless autoscaling
 - **Enterprise**: Advanced governance, compliance, and support
 
-**Community**
-- **Connect**: [Slack](https://link.databend.com/join-slack) | [GitHub](https://github.com/databendlabs/databend) | [Twitter](https://twitter.com/DatabendLabs/)
-- **Contribute**: [Good First Issues](https://link.databend.com/i-m-feeling-lucky) | [Build Guide](https://docs.databend.com/developer/community/contributor/building-from-source)
+## Community
+
+For guidance on using Databend, start with the [official documentation](https://docs.databend.com/). For further assistance, join our community:
+
+- **[Slack](https://link.databend.com/join-slack)** - Live discussion with the community
+- **[GitHub](https://github.com/databendlabs/databend)** - Feature requests, bug reports, and contributions
+- **[Twitter](https://twitter.com/DatabendLabs/)** - Latest news and updates
+- **[Good First Issues](https://link.databend.com/i-m-feeling-lucky)** - Start contributing today
+- **[Build Guide](https://docs.databend.com/developer/community/contributor/building-from-source)** - Development setup
 
 **Your merged code gets you into the `system.contributors` table. Forever.**
 
