@@ -1,0 +1,91 @@
+# Setup test environment
+statement ok
+drop stage if exists read_file_test;
+
+statement ok
+create stage read_file_test;
+
+statement ok
+remove @read_file_test;
+
+# Create test data
+statement ok
+drop table if exists test_numbers;
+
+statement ok
+create table test_numbers (id int, value string);
+
+statement ok
+insert into test_numbers values (1, 'hello'), (2, 'world'), (3, 'databend');
+
+# Export test data to stage
+statement ok
+copy into @read_file_test/numbers.csv from test_numbers file_format=(type=csv);
+
+# Export JSON data  
+statement ok
+copy into @read_file_test/data.json from (select object('id', id, 'value', value) as json_data from test_numbers) file_format=(type=ndjson);
+
+# Test positional arguments - read CSV file
+query
+select filename, size > 0 as has_size, stage, relative_path, length(content) > 0 as has_content 
+from read_file(@read_file_test, 'numbers.csv')
+----
+numbers.csv 1 read_file_test numbers.csv 1
+
+# Test named arguments - read JSON file  
+query
+select filename, size > 0 as has_size, stage, relative_path, length(content) > 0 as has_content
+from read_file(stage_name => 'read_file_test', relative_path => 'data.json')
+----
+data.json 1 read_file_test data.json 1
+
+# Test content verification - CSV should contain our test data
+query
+select content::varchar like '%hello%' as contains_hello,
+       content::varchar like '%world%' as contains_world,
+       content::varchar like '%databend%' as contains_databend
+from read_file(@read_file_test, 'numbers.csv')
+----
+1 1 1
+
+# Test metadata fields
+query 
+select stage, relative_path, 
+       case when content_type is null then 'no-content-type' else content_type end as ct,
+       case when etag is null then 'no-etag' else etag end as et,
+       last_modified != '' as has_timestamp
+from read_file(@read_file_test, 'numbers.csv')
+----
+read_file_test numbers.csv no-content-type no-etag 1
+
+# Test all 8 columns are present
+query
+select count(*) as column_count from (
+    select filename, content, size, last_modified, content_type, etag, stage, relative_path 
+    from read_file(@read_file_test, 'numbers.csv')
+)
+----
+1
+
+# Test error cases - nonexistent file
+statement error
+select * from read_file(@read_file_test, 'nonexistent.txt')
+
+# Test error cases - missing @ prefix
+statement error
+select * from read_file('read_file_test', 'numbers.csv')
+
+# Test error cases - missing arguments
+statement error
+select * from read_file(@read_file_test)
+
+# Cleanup
+statement ok
+remove @read_file_test;
+
+statement ok
+drop stage read_file_test;
+
+statement ok
+drop table test_numbers;

@@ -55,6 +55,7 @@ use crate::table_functions::fuse_vacuum2::FuseVacuum2Table;
 use crate::table_functions::infer_schema::InferSchemaTable;
 use crate::table_functions::inspect_parquet::InspectParquetTable;
 use crate::table_functions::list_stage::ListStageTable;
+use crate::table_functions::read_file::ReadFileTable;
 use crate::table_functions::numbers::NumbersTable;
 use crate::table_functions::show_grants::ShowGrants;
 use crate::table_functions::show_roles::ShowRoles;
@@ -260,6 +261,11 @@ impl TableFunctionFactory {
         creators.insert(
             "list_stage".to_string(),
             (next_id(), Arc::new(ListStageTable::create)),
+        );
+
+        creators.insert(
+            "read_file".to_string(),
+            (next_id(), Arc::new(ReadFileTable::create)),
         );
 
         creators.insert(
